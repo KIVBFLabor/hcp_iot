@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>iotscenario</display-name>
+  <resource-ref>
+    <res-ref-name>jdbc/DefaultDB</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+  </resource-ref>
+  <servlet>
+    <description></description>
+    <display-name>SensorsServlet</display-name>
+    <servlet-name>SensorsServlet</servlet-name>
+    <servlet-class>com.sap.iot.sensors.SensorsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SensorsServlet</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+</web-app>

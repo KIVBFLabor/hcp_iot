@@ -1,0 +1,205 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+<title>Zimmertemperatur</title>
+
+<!-- You might want to use this bootstrap instead for local testing  -->
+<script src="https://sapui5.hana.ondemand.com/resources/sap-ui-core.js"
+		type="text/javascript" id="sap-ui-bootstrap"
+		data-sap-ui-libs="sap.ui.commons, sap.suite.ui.commons, sap.m, sap.ui.core, sap.makit"
+		data-sap-ui-theme="sap_bluecrystal">
+</script>
+
+ 
+<!-- 
+<script src="/sapui5/sap-ui-core.js"
+	type="text/javascript" id="sap-ui-bootstrap"
+	data-sap-ui-libs="sap.ui.commons, sap.suite.ui.commons, sap.m, sap.ui.core, sap.makit"
+	data-sap-ui-theme="sap_bluecrystal">
+	
+</script>
+-->
+
+<!-- ###################################################### -->
+<!-- DATA MODEL functions									-->
+<!-- ###################################################### -->
+<script type="text/javascript">
+	var getModelFromURL = function(url) {
+		var url = url;
+		var oModel = new sap.ui.model.json.JSONModel();
+		oModel.loadData(url, null, false);
+		return oModel;
+	};
+	
+	function updateDataModel(model){
+		model.refresh();
+	}
+</script>
+
+<!-- ###################################################### -->
+<!-- All VIEWS												-->
+<!-- ###################################################### -->
+<!-- Functions for the MAIN PAGE of the app -->
+<script type="text/javascript">
+	var buildMainPage = function(id, title) {
+		var page = new sap.m.Page(id, {
+			title : title,
+			showNavButton : false
+		});
+	
+		return page;
+	};
+	
+	var buildChartPage = function(id, oModel, sensorNumber, chart) {
+	
+		var chartPage = new sap.m.Page(id , {
+			showNavButton: true, navButtonPress: function(){app.back();},
+			content : [chart]
+		});	
+		chartPage.setModel(oModel);
+		
+		chartPage.bindProperty("title", "/sensor" + sensorNumber + "/description");
+	
+		return chartPage;
+	};
+</script>
+
+<!-- Functions for creating the SENSOR TILES of the app -->
+<script type="text/javascript">
+	var buildSensorTileToChart = function(oModel, sensorNumber,iconName) {
+		var tile = new sap.m.StandardTile("mySensorTile" + sensorNumber, {
+			numberUnit : "Celsius",
+			infoState : "Success",
+			icon : sap.ui.core.IconPool.getIconURI(iconName),
+			press : function(oEvent) { app.to("detailPageChart_sensor" + sensorNumber);},
+			tap   : function(oEvent) { app.to("detailPageChart_sensor" + sensorNumber);}
+		});
+		tile.setModel(oModel);
+	
+		// All the bindings
+		tile.bindProperty("title", "/sensor" + sensorNumber + "/description");
+		tile.bindProperty("info", "/sensor" + sensorNumber + "/device");
+		tile.bindProperty("number", "/sensor" + sensorNumber + "/lastMeasurement/value", function(bValue) {
+			returnVal = Math.round(bValue * 10) / 10 ;
+			return returnVal + "\u00b0";
+		});
+		return tile;
+	
+	};
+	
+	var buildStandaloneSensorTile = function(oModel, sensorNumber, sensorId){
+		var tile = new sap.m.StandardTile("myStandaloneSensorTile" + sensorNumber, {
+			numberUnit : "Celsius",
+			infoState : "Success",
+			icon : sap.ui.core.IconPool.getIconURI("temperature"),
+			tap : function() {
+				sendSensorValue(sensorNumber, sensorId);
+			},
+			press : function() {
+				sendSensorValue(sensorNumber, sensorId);
+			}
+			
+		});
+		tile.setModel(oModel);
+	
+		// All the bindings
+		tile.bindProperty("title", "/sensor" + sensorNumber + "/description");
+		tile.bindProperty("info", "/sensor" + sensorNumber + "/device");
+		tile.bindProperty("number", "/sensor" + sensorNumber + "/lastMeasurement/value", function(bValue) {
+			returnVal = Math.round(bValue * 10) / 10 ;
+			return returnVal + "\u00b0";
+		});
+		return tile;
+		
+	};
+</script>
+
+<!-- Function for creating the TEMPERATURE CHARTS OF A SENSOR -->
+<script type="text/javascript">
+	var getChartForMetric = function(id, model, bindingName, minValue, maxValue){
+	    var oChart = new sap.makit.Chart(id, {
+	     height: "90%",
+	     width : "100%",
+	     type: sap.makit.ChartType.Line,
+	     category : new sap.makit.Category({ column : "storedAt" }),
+	     categoryAxis : new sap.makit.CategoryAxis({ displayLastLabel: false}),
+	     valueAxis    : new sap.makit.ValueAxis({  min:minValue, max:maxValue}),
+	     values       :  [new sap.makit.Value({ expression : "temperature", displayName : "Sensor temperatures"})]
+	 	});
+	 	
+	 	 oChart.addColumn(new sap.makit.Column({name:"storedAt", value:"{storedAt}"}));
+	     oChart.addColumn(new sap.makit.Column({name:"temperature", value:"{value}", type:"number"}));
+	     oChart.setModel(model);
+	     oChart.bindRows(bindingName);
+	 	
+	 	return oChart;
+	};	
+</script>
+
+<!-- Function to update the model of an UI object -->
+<script type="text/javascript">
+	var updateModelOfUiObject = function(id, model){
+		var object = sap.ui.getCore().getElementById(id);
+		object.setModel(model);
+	
+	};	
+</script>
+
+
+<!-- ###################################################### -->
+<!-- THE MAIN APP											-->
+<!-- ###################################################### -->
+<script type="text/javascript">
+	jQuery.sap.require("sap.ui.core.IconPool");
+	jQuery.sap.require("sap.ui.core.Icon");
+	jQuery.sap.declare("sap.ui.customized.FontIconContainer");
+
+	var idPageMain = "main";
+	var app = new sap.m.App("myApp", {
+		initialPage : idPageMain
+	}); 
+
+	
+	// Now create the page and place it into the HTML document
+	var mainPage = buildMainPage(idPageMain, "Zimmertemperatur");
+	
+	var appLink = window.location.href;
+	var oModelSensorData = getModelFromURL("/sensordata");
+	
+	var sensors = oModelSensorData.getData();
+	for (var sensorNumber = 0; sensors.hasOwnProperty('sensor'+sensorNumber); sensorNumber++){
+		var sensorTile = buildSensorTileToChart(oModelSensorData, sensorNumber , "temperature");
+	 	var chart_sensor = getChartForMetric("chart_sensor" + sensorNumber, oModelSensorData, "/sensor" +  sensorNumber + "/measurements", "","");
+		var detailPageChart_sensor = buildChartPage("detailPageChart_sensor" + sensorNumber,oModelSensorData, sensorNumber ,chart_sensor);
+
+		mainPage.addContent(sensorTile);
+		app.addPage(detailPageChart_sensor);
+	}
+	
+	app.addPage(mainPage);
+	app.setBackgroundImage("pics/fish.png");
+	app.setBackgroundRepeat(true);
+	app.placeAt("content");
+
+	//Update the values in the tiles and charts every x ms
+	var updateInMilliseconds = 2000;
+	setInterval(function() {
+		var oModelSensorData = getModelFromURL("/sensordata");
+		updateDataModel(oModelSensorData);
+
+		var sensors = oModelSensorData.getData();
+		for (var sensorNumber = 0; sensors.hasOwnProperty('sensor'+sensorNumber); sensorNumber++){
+			updateModelOfUiObject("mySensorTile" + sensorNumber,oModelSensorData);
+			updateModelOfUiObject("chart_sensor" + sensorNumber,oModelSensorData);
+		}
+				
+	}, updateInMilliseconds);
+</script>
+
+</head>
+<body class="sapUiBody">
+	<div id="content"></div>
+</body>
+</html>

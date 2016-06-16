@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta charset="UTF-8">
+
+		<title>Generated App</title>
+
+		<script id="sap-ui-bootstrap"
+			src="/resources/sap-ui-core.js"
+			data-sap-ui-libs="sap.m"
+			data-sap-ui-theme="sap_bluecrystal"
+            data-sap-ui-xx-supportedLanguages="en"
+            data-sap-ui-xx-bindingSyntax="complex"
+			data-sap-ui-compatVersion="edge"
+			data-sap-ui-resourceroots='{"generated.app": ""}'>
+		</script>
+
+		<script>
+			sap.ui.getCore().attachInit(function() {
+				jQuery.sap.require("sap.ui.fl.FakeLrepConnector");
+				sap.ui.fl.FakeLrepConnector.enableFakeConnector("fakeLRep.json");
+				var sNamespase = "generated.app";
+				sNamespase = sNamespase.replace(".", "/");
+				sap.ui.require([
+					sNamespase + "/localService/mockserver"
+				], function (server) {
+					// set up test service for local testing
+					server.init();
+
+					new sap.m.Shell({
+						app: new sap.ui.core.ComponentContainer({
+							height : "100%",
+							name : "generated.app"
+						})
+					}).placeAt("content");
+				});
+			});
+		</script>
+	</head>
+
+	<body class="sapUiBody" id="content">
+	</body>
+
+</html>

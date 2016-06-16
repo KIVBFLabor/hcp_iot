@@ -1,0 +1,96 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" controllerName="generated.app.controller.1461229590941_S1" xmlns:m="sap.m"
+	xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<m:Page id="sap_Responsive_Page_0" title="Parkplatz App" showHeader="true" showFooter="true" showNavButton="false">
+		<m:content>
+			<m:IconTabBar id="np-sap_m_IconTabBar-1461229652836-0N0" selectedKey="Ok" applyContentPadding="true" backgroundDesign="Solid"
+				expandable="false" expanded="true" visible="true">
+				<m:content>
+					<m:Text id="np-sap_m_Text-1461229652836-0N1" maxLines="1" text="Tab Bar Content goes here ..." textAlign="Begin" textDirection="Inherit"
+						width="300px" wrapping="true"/>
+				</m:content>
+				<m:items>
+					<m:IconTabFilter id="np-sap_m_IconTabFilter_Ok-1461229652836-0N2" count="" design="Vertical" enabled="true" icon="sap-icon://car-rental"
+						iconColor="Critical" showAll="false" text="" textDirection="Inherit" visible="true">
+						<m:content>
+							<form:SimpleForm id="np-sap_ui_layout_form_SimpleForm-1461229762322-0QY" minWidth="-1" maxContainerCols="2" layout="ResponsiveGridLayout"
+								editable="true" visible="true">
+								<form:title>
+									<core:Title id="np-sap_ui_core_Title-1461229762322-0QZ" level="H3" text="Parkplatzsituation"/>
+								</form:title>
+								<form:content>
+									<m:Label id="np-sap_m_Label-1461229762323-0R0" design="Bold" required="false" text="Anzahl Parkplätze" textAlign="Begin"
+										textDirection="Inherit" width="auto"/>
+									<m:Text id="np-sap_m_Text-1461229762323-0R1" maxLines="1" text="21" textAlign="Begin" textDirection="Inherit" width="300px" wrapping="true"/>
+									<m:Label id="np-sap_m_Label-1461229762323-0R2" design="Bold" required="false" text="freie Parkplätze" textAlign="Begin"
+										textDirection="Inherit" width="auto"/>
+									<m:Text id="np-sap_m_Text-1461229762323-0R3" maxLines="1" text="6" textAlign="Begin" textDirection="Inherit" width="300px" wrapping="true"/>
+								</form:content>
+							</form:SimpleForm>
+						</m:content>
+					</m:IconTabFilter>
+					<m:IconTabSeparator id="np-sap_m_IconTabSeparator-1461229652839-0NQ" iconDensityAware="false" icon=""/>
+					<m:IconTabFilter id="np-sap_m_IconTabFilter_Attachments-1461229652839-0NR" count="" design="Vertical" enabled="true"
+						icon="sap-icon://time-entry-request" iconColor="Neutral" showAll="false" text="" textDirection="Inherit" visible="true">
+						<m:content>
+							<m:Table id="np-sap_m_Table-1461230151714-0V5" backgroundDesign="Translucent" mode="None" noDataText="No data" showSeparators="All"
+								visible="true" width="100%" headerText="" growingThreshold="20" growingScrollToLoad="false" growing="false"
+								items="{/ParkplatzbewegungenSet}">
+								<m:items>
+									<m:ColumnListItem id="np-sap_m_ColumnListItem-1461230424184-120" type="Active">
+										<m:cells>
+											<m:ObjectIdentifier id="np-sap_m_ObjectIdentifier-1461230424185-121"
+												text="{path: 'Datum', type: 'sap.ui.model.type.DateTime', formatOptions: { UTC: true, style: 'short' }}" title="" titleActive="false"
+												visible="true"/>
+											<m:Text id="np-sap_m_Text-1461230424185-122" maxLines="1" text="{Art}" textAlign="Begin" textDirection="Inherit" width="auto"
+												wrapping="true"/>
+										</m:cells>
+									</m:ColumnListItem>
+								</m:items>
+								<m:headerToolbar>
+									<m:Toolbar id="np-sap_m_Toolbar_3-1461230151717-0VI" visible="true" enabled="true" width="auto" height="46px" design="Solid">
+										<m:tooltip/>
+										<m:content>
+											<m:ToolbarSpacer id="np-sap_m_ToolbarSpacer-1461230151717-0VJ" width=""/>
+											<m:Text id="np-sap_m_Text-1461230151717-0VK" maxLines="1" text="Parkplatzbewegung" textAlign="Begin" textDirection="Inherit" width="auto"
+												wrapping="true"/>
+											<m:ToolbarSpacer id="np-sap_m_ToolbarSpacer-1461230151717-0VL" width=""/>
+										</m:content>
+									</m:Toolbar>
+								</m:headerToolbar>
+								<m:columns>
+									<m:Column id="np-sap_m_Column_Product-1461230151717-0VM" width="auto" vAlign="Inherit" popinDisplay="Block" minScreenWidth="Tablet"
+										mergeDuplicates="false" hAlign="Begin" demandPopin="true">
+										<m:header>
+											<m:Text id="np-sap_m_Text-1461230151717-0VN" maxLines="1" text="Datum" textAlign="Begin" textDirection="Inherit" width="auto"
+												wrapping="true"/>
+										</m:header>
+										<m:footer/>
+									</m:Column>
+									<m:Column id="np-sap_m_Column_Supplier-1461230151717-0VO" width="auto" vAlign="Inherit" popinDisplay="Block" minScreenWidth="Tablet"
+										mergeDuplicates="false" hAlign="Begin" demandPopin="true">
+										<m:header>
+											<m:Text id="np-sap_m_Text-1461230151717-0VP" maxLines="1" text="Art" textAlign="Begin" textDirection="Inherit" width="auto" wrapping="true"/>
+										</m:header>
+										<m:footer/>
+									</m:Column>
+								</m:columns>
+							</m:Table>
+						</m:content>
+					</m:IconTabFilter>
+					<m:IconTabSeparator id="np-sap_m_IconTabSeparator-1461230911736-18T" iconDensityAware="false" icon=""/>
+					<m:IconTabFilter id="np-sap_m_IconTabFilter-1461230913448-18V" iconDensityAware="false" count="" design="Vertical" enabled="true"
+						icon="sap-icon://line-chart" iconColor="Positive" showAll="false" text="" textDirection="Inherit" visible="true">
+						<m:content>
+							<m:Text id="np-sap_m_Text-1461230913449-18W" maxLines="1" text="Hier Statistik einfügen" textAlign="Begin" textDirection="Inherit"
+								width="300px" wrapping="true"/>
+						</m:content>
+					</m:IconTabFilter>
+				</m:items>
+			</m:IconTabBar>
+		</m:content>
+		<m:footer/>
+		<m:headerContent/>
+		<m:subHeader/>
+		<m:customHeader/>
+	</m:Page>
+</mvc:View>

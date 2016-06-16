@@ -1,0 +1,23 @@
+{
+    "authenticationMethod": "none",
+    "routes": [
+        {
+                "path": "/sensordata",
+                "target": {
+                                "type": "destination",
+                                "name": "fishimportsensordata"
+                },
+                "description": "Fish import sensor data"
+        },
+{
+                "path": "/sapui5",
+                "target": {
+                                "type": "service",
+                                "name": "sapui5",
+                                "entryPath":"/resources"
+                },
+                "description": "SAPUI5"
+        }
+        
+    ]
+}
